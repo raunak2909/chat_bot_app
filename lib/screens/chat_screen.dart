@@ -4,6 +4,7 @@ import 'package:chat_bot_app/provider/chat_provider.dart';
 import 'package:chat_bot_app/utils/util_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../data/remote/api/urls.dart';
@@ -15,6 +16,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   var promptController = TextEditingController();
+  
+  var dtFormat = DateFormat.Hm();
 
   @override
   void initState() {
@@ -39,6 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemCount: listMsg.length,
                   itemBuilder: (_, index) {
                     var msgModel = listMsg[index];
+                    
                     return msgModel.senderId == 1
 
                         /// chat bot ui
@@ -76,9 +80,15 @@ class _ChatScreenState extends State<ChatScreen> {
                         /// user ui
                         : Padding(
                             padding: const EdgeInsets.all(11.0),
-                            child: Text(
-                              msgModel.msg,
-                              style: mTextStyle16(mColor: Colors.grey),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  msgModel.msg,
+                                  style: mTextStyle16(mColor: Colors.grey),
+                                ),
+                                Text(dtFormat.format(DateTime.fromMillisecondsSinceEpoch(msgModel.sentAt)), style: mTextStyle12(mColor: Colors.grey),)
+                              ],
                             ),
                           );
                   });
